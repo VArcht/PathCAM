@@ -57,7 +57,7 @@ namespace GUI
                 r.Height = 1;
             }
             float aspect = r.Width / (float)r.Height;
-            projectionMatrix = OpenTK.Matrix4.CreatePerspectiveFieldOfView(OpenTK.MathHelper.PiOver4, aspect, 0.1f, 100.0f);
+            projectionMatrix = OpenTK.Matrix4.CreatePerspectiveFieldOfView(OpenTK.MathHelper.PiOver4, aspect, 0.1f, 1000.0f);
             inverseProjectionMatrix = Matrix4.Invert(projectionMatrix);
         }
 
@@ -190,8 +190,8 @@ namespace GUI
 
         private void DrawAxis()
         {
-            int min = -10;
-            int max = 10;
+            int min = -1000;
+            int max = 1000;
 
             // 1 inch spaced grid lines
             GL.Disable(EnableCap.Lighting);

@@ -19,6 +19,7 @@
         private System.Windows.Forms.Button saveGcodeButton;
         private System.Windows.Forms.CheckBox showRobotFormCheckbox;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox checkBox1;
 
     }
 }

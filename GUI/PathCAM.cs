@@ -300,6 +300,7 @@ namespace GUI
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.robotControl = new GUI.RobotControl();
             this.drawing3D = new GUI.Drawing3D();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -433,11 +434,24 @@ namespace GUI
             this.drawing3D.TabIndex = 68;
             this.drawing3D.VSync = false;
             // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(202, 17);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(94, 17);
+            this.checkBox1.TabIndex = 71;
+            this.checkBox1.Text = "Do Rough Cut";
+            this.checkBox1.UseVisualStyleBackColor = false;
+            this.checkBox1.BackColor = Color.Transparent;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
             // PathCAM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.showRobotFormCheckbox);
             this.Controls.Add(this.saveGcodeButton);
             this.Controls.Add(this.button2);
@@ -494,6 +508,11 @@ namespace GUI
         private void robotControl_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            PathPlanner.DoRoughCut = !PathPlanner.DoRoughCut;
         }
     }
 }

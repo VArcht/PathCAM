@@ -29,6 +29,16 @@ namespace Router.Paths
 {
     public class PathPlanner
     {
+        private static bool _doRoughCut = false;
+
+        //Enable or Disable two pass coutouts
+        public static bool DoRoughCut
+        {
+            get { return _doRoughCut; }
+            set { _doRoughCut = value; }
+        }
+
+
         /// <summary>
         /// Get slices from the top of the triangle mesh to the bottom, spaced no more than
         /// the specified cut depth in router.  The first slice is the highest.
@@ -262,37 +272,43 @@ namespace Router.Paths
                 paths.Add(fixedLine);
             }
 
-            // Compute the rest of the routs required to remove the material.  Do these first - they will
-            // be a distance away from the final product, so if forces push the bit around some, there's no issue.
-            // Also avoid tabs on these paths.
-            lastPaths.Offset(offset);
 
-            Slice obliterate = new Slice(polygons.GetLines(lastLineType), polygons.Plane);
-            if (inside)
+
+            if (_doRoughCut)
             {
-                obliterate.SubtractFrom(lastPaths);
-            }
-            else
-            {
-                obliterate.Subtract(lastPaths);
-            }
-            
-            //DrawSlice(Color.Orange, Color.Red, obliterate);
-            
-            var lines = PathTree.ObliterateSlice(obliterate, toolRadius);
-            
-            foreach (var line in lines)
-            {
-                var fixedLine = line;
-                foreach (Tabs t in tabs)
+                // Compute the rest of the routs required to remove the material.  Do these first - they will
+                // be a distance away from the final product, so if forces push the bit around some, there's no issue.
+                // Also avoid tabs on these paths.
+                lastPaths.Offset(offset);
+
+                Slice obliterate = new Slice(polygons.GetLines(lastLineType), polygons.Plane);
+                if (inside)
                 {
-                    fixedLine = t.AvoidTabs(fixedLine);
+                    obliterate.SubtractFrom(lastPaths);
                 }
-                paths.Insert(0, fixedLine);
+                else
+                {
+                    obliterate.Subtract(lastPaths);
+                }
+
+                //DrawSlice(Color.Orange, Color.Red, obliterate);
+
+                var lines = PathTree.ObliterateSlice(obliterate, toolRadius);
+
+                foreach (var line in lines)
+                {
+                    var fixedLine = line;
+                    foreach (Tabs t in tabs)
+                    {
+                        fixedLine = t.AvoidTabs(fixedLine);
+                    }
+                    paths.Insert(0, fixedLine);
+                }
             }
 
             return paths;
         }
+
 
         private static void DrawSlice(Color lineColor, Color planeColor, Slice s)
         {
